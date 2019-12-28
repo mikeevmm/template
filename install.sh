@@ -65,7 +65,7 @@ then
     exit 1
 fi
 
-sed -i "s@INSTALL=\"\"@INSTALL=\"$INSTALL\"@" "$INSTALL/remove.sh"
+sed -i "s@INSTALL=\".+\"@INSTALL=\"$INSTALL\"@" "$INSTALL/remove.sh"
 
 echo ""
 
