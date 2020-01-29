@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """Usage: latextemplate -h | --help
-       latextemplate templates (--list | --inspect TEMPLATE)
-       latextemplate make [--allow-existing [--overwrite-files]] [-t | --template TEMPLATE] [DIRECTORY] NAME
+       latextemplate templates (--list | --inspect=<template>)
+       latextemplate make [--allow-existing [--overwrite-files]] [--template=<template>] [--directory=<directory>] <name>
 
--h --help               Displays this text.
-templates --list        List all available templates. These can be individually inspected using `template --list`.
-templates --inspect     Lists all files in the specified template, and page-displays each file.
---allow-existing        Allow a new project to be created inside an existing, non-empty directory.
---overwrite-files       Overwrite existing files if they do exist. Use with caution.
--t --template           Specify what template to use [default: "default"]. Use the `templates --list` command to see available templates.
+Options:
+    -h --help                Displays this text.
+    --list                   List all available templates. These can be individually inspected using `template --list`.
+    --inspect=<template>     Lists all files in the specified template, and page-displays each file.
+    --allow-existing         Allow a new project to be created inside an existing, non-empty directory.
+    --overwrite-files        Overwrite existing files if they do exist. Use with caution.
+    --template=<template>    Specify what template to use [default: "default"]. Use the `templates --list` command to see available templates.
+    --directory=<directory>  Specify in what directory the new template should be created [default: "."].
 """
 
 from docopt import docopt
@@ -32,12 +34,12 @@ class tcolors:
 # The directory where each template is defined.
 # Defaults to the default install location as
 # a hail mary.
-templates_dir = os.environ.get("LATEX_TEMPLATES_DIR",
+templates_dir = os.environ.get("LATEX_NAMES_DIR",
                                os.environ['HOME'] + "/latextemplate/templates")
 
 if not os.path.exists(templates_dir):
     print("Could not find the templates directory!")
-    print("Please set LATEX_TEMPLATES_DIR to a valid directory")
+    print("Please set LATEX_NAMES_DIR to a valid directory")
     print("or make sure HOME/latextemplate/templates/ exists.")
     exit(1)
 
@@ -81,7 +83,7 @@ if __name__ == '__main__':
             # Inspect given template
             # Does this template exist?
             qualified_template_arg = templates_dir + \
-                '/' + arguments['TEMPLATE']
+                '/' + arguments['<template>']
             if qualified_template_arg not in templates:
                 print("Unknown template. Use templates --list")
                 print("to see a list of available templates.")
@@ -108,9 +110,7 @@ if __name__ == '__main__':
     elif arguments['make']:
         # Create project mode
         # Determine chosen template
-        template = "default"
-        if arguments['--template']:
-            template = arguments['TEMPLATE']
+        template = arguments.get('--template', 'default')
         qualified_template = os.path.join(templates_dir, template)
 
         # Check that specified template exists
@@ -121,8 +121,8 @@ if __name__ == '__main__':
 
         # Get destination directory
         target_dir = os.path.join(
-            os.path.realpath(arguments.get('DIRECTORY', '.')),
-            arguments['NAME'])
+            os.path.realpath(arguments.get('<directory>', '.')),
+            arguments['<name>'])
 
         # Create directory if needed
         # (If directory already exists, proceed only if valid)
