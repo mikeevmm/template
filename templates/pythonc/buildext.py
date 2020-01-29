@@ -9,7 +9,7 @@ py_sources = glob(dirname(realpath(__file__)) + '/python/*.c')
 extras = ['-Wall', '-Wextra', '-Wconversion', '-Wno-unused-variable',
           '-Wno-unused', '-pedantic', '-Wmissing-prototypes', '-Wstrict-prototypes', '-O3']
 
-module = Extension('qop', sources=sources + py_sources,
+module = Extension('module', sources=sources + py_sources,
                    include_dirs=[
                        np.get_include(),
                        dirname(realpath(__file__))
