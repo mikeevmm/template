@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Usage: latextemplate -h | --help
        latextemplate templates (--list | --inspect=<template>)
-       latextemplate make [--allow-existing [--overwrite-files]] [--template=<template>] [--directory=<directory>] <name>
+       latextemplate create [--allow-existing [--overwrite-files]] [--template=<template>] [--directory=<directory>] <name>
+       latextemplate create [--allow-existing [--overwrite-files]] [--template=<template>] <directory> <name>
+       latextemplate create [--allow-existing [--overwrite-files]] [--template=<template>] <name>
 
 Options:
     -h --help                Displays this text.
@@ -9,8 +11,8 @@ Options:
     --inspect=<template>     Lists all files in the specified template, and page-displays each file.
     --allow-existing         Allow a new project to be created inside an existing, non-empty directory.
     --overwrite-files        Overwrite existing files if they do exist. Use with caution.
-    --template=<template>    Specify what template to use [default: "default"]. Use the `templates --list` command to see available templates.
-    --directory=<directory>  Specify in what directory the new template should be created [default: "."].
+    --template=<template>    Specify what template to use [default: default]. Use the `templates --list` command to see available templates.
+    --directory=<directory>  Specify in what directory the new template should be created [default: .].
 """
 
 from docopt import docopt
@@ -107,7 +109,7 @@ if __name__ == '__main__':
                         break
                 if abort_display:
                     break
-    elif arguments['make']:
+    elif arguments['create'] or arguments['make']:
         # Create project mode
         # Determine chosen template
         template = arguments.get('--template', 'default')
@@ -121,7 +123,7 @@ if __name__ == '__main__':
 
         # Get destination directory
         target_dir = os.path.join(
-            os.path.realpath(arguments.get('<directory>', '.')),
+            os.path.realpath(arguments.get('--directory', arguments.get('<directory>', '.'))),
             arguments['<name>'])
 
         # Create directory if needed
