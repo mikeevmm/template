@@ -15,22 +15,11 @@ Options:
     --directory=<directory>  Specify in what directory the new template should be created [default: .].
 """
 
-from docopt import docopt
+from internals.docopt import docopt
 from glob import glob
 from distutils.dir_util import copy_tree
 import os
 import pydoc
-
-
-class tcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
 
 # The directory where each template is defined.
@@ -84,8 +73,9 @@ if __name__ == '__main__':
         elif arguments['--inspect']:
             # Inspect given template
             # Does this template exist?
+            print(arguments)
             qualified_template_arg = templates_dir + \
-                '/' + arguments['<template>']
+                '/' + arguments['--inspect']
             if qualified_template_arg not in templates:
                 print("Unknown template. Use templates --list")
                 print("to see a list of available templates.")
