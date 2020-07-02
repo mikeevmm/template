@@ -22,21 +22,18 @@ import os
 import pydoc
 
 
-# The directory where each template is defined.
-# Defaults to the default install location as
-# a hail mary.
-templates_dir = os.environ.get("LATEX_NAMES_DIR",
-                               os.environ['HOME'] + "/latextemplate/templates")
+class tcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
-if not os.path.exists(templates_dir):
-    print("Could not find the templates directory!")
-    print("Please set LATEX_NAMES_DIR to a valid directory")
-    print("or make sure HOME/latextemplate/templates/ exists.")
-    exit(1)
 
 # Tree-display a directory
-
-
 def tree_display(startpath):
     for root, dirs, files in os.walk(startpath):
         level = root.replace(startpath, '').count(os.sep)
@@ -61,6 +58,18 @@ def tree_display(startpath):
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='latextemplate 1.0')
 
+    # The directory where each template is defined.
+    # Defaults to the default install location as
+    # a hail mary.
+    templates_dir = os.environ.get("LATEX_TEMPLATES_DIR",
+                                   os.environ['HOME'] + "/latextemplate/templates")
+
+    if not os.path.exists(templates_dir):
+        print("Could not find the templates directory!")
+        print("Please set LATEX_TEMPLATES_DIR to a valid directory")
+        print("or make sure HOME/latextemplate/templates/ exists.")
+        exit(1)
+
     # `templates` command mode
     if arguments["templates"]:
         templates = glob(f"{templates_dir}/*")
@@ -73,7 +82,6 @@ if __name__ == '__main__':
         elif arguments['--inspect']:
             # Inspect given template
             # Does this template exist?
-            print(arguments)
             qualified_template_arg = templates_dir + \
                 '/' + arguments['--inspect']
             if qualified_template_arg not in templates:
