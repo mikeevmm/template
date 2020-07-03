@@ -7,12 +7,15 @@
 
 Options:
     -h --help                Displays this text.
-    --list                   List all available templates. These can be individually inspected using `template --list`.
-    --inspect=<template>     Lists all files in the specified template, and page-displays each file.
-    --allow-existing         Allow a new project to be created inside an existing, non-empty directory.
-    --overwrite-files        Overwrite existing files if they do exist. Use with caution.
-    --template=<template>    Specify what template to use [default: default]. Use the `templates --list` command to see available templates.
-    --directory=<directory>  Specify in what directory the new template should be created [default: .].
+    --list                   List all available templates.
+    --inspect=<template>     Lists and page displays all files in the template.
+    --allow-existing         Allow a new project to be created inside an
+                             existing, non-empty directory.
+    --overwrite-files        Overwrite existing files if they do exist.
+                             Use with caution.
+    --template=<template>    Specify what template to use [default: default].
+    --directory=<directory>  Specify in what directory the new template should
+                             be created [default: .].
 """
 
 from internals.docopt import docopt
