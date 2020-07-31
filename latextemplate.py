@@ -74,7 +74,7 @@ if __name__ == '__main__':
         exit(1)
 
     # `templates` command mode
-    if arguments['create']:
+    if not arguments['create']:
         templates = glob(f"{templates_dir}/*")
         if arguments['--list']:
             # Tree all available templates
