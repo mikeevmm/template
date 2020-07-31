@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Usage: latextemplate -h | --help
-       latextemplate templates (--list | --inspect=<template>)
+       latextemplate (--list | --inspect=<template>)
        latextemplate create [--allow-existing [--overwrite-files]] [--template=<template>] [--directory=<directory>] <name>
        latextemplate create [--allow-existing [--overwrite-files]] [--template=<template>] <directory> <name>
        latextemplate create [--allow-existing [--overwrite-files]] [--template=<template>] <name>
@@ -74,7 +74,7 @@ if __name__ == '__main__':
         exit(1)
 
     # `templates` command mode
-    if arguments["templates"]:
+    if arguments['create']:
         templates = glob(f"{templates_dir}/*")
         if arguments['--list']:
             # Tree all available templates
@@ -110,7 +110,7 @@ if __name__ == '__main__':
                         break
                 if abort_display:
                     break
-    elif arguments['create'] or arguments['make']:
+    else:
         # Create project mode
         # Determine chosen template
         template = arguments.get('--template', 'default')

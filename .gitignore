@@ -2,3 +2,4 @@
 !.gitinclude
 !.empty
 !.gitignore
+internals/__pycache__/
