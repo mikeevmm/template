@@ -31,7 +31,7 @@ COMPILE.cc=$(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 all: $(EXE)
 
 $(EXE): $(OBJ)
-	$(CC) $(LDFLAGS) -o $(EXE) $(OBJ) $(LDLIBS)
+	$(CXX) $(LDFLAGS) -o $(EXE) $(OBJ) $(LDLIBS)
 
 $(OBJ_DIR)/%.c.o : $(SRC_DIR)/%.c $(DEPDIR)/%.c.d | $(DEPDIR)
 	$(COMPILE.c) $< -o $@ 
