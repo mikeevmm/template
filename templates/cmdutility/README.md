@@ -6,7 +6,7 @@ Description here.
 
 ```bash
 git clone [GIT URL] 
-cd rot13 
+cd [UTILITY NAME] 
 bash install.sh
 [UTILITY NAME] --help
 ```
