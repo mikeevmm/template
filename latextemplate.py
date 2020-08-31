@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 """Usage: latextemplate -h | --help
        latextemplate (--list | --inspect=<template>)
-       latextemplate create [--allow-existing [--overwrite-files]] [--template=<template>] [--directory=<directory>] <name>
-       latextemplate create [--allow-existing [--overwrite-files]] [--template=<template>] <directory> <name>
-       latextemplate create [--allow-existing [--overwrite-files]] [--template=<template>] <name>
+       latextemplate create [--allow-existing [--overwrite-files] --template=<template> --directory=<directory>] <name>
 
 Options:
     -h --help                Displays this text.
@@ -14,8 +12,7 @@ Options:
     --overwrite-files        Overwrite existing files if they do exist.
                              Use with caution.
     --template=<template>    Specify what template to use [default: default].
-    --directory=<directory>  Specify in what directory the new template should
-                             be created [default: .].
+    --directory=<directory>  Specify in which directory to create the project [default: .].
 """
 
 from internals.docopt import docopt
@@ -59,7 +56,7 @@ def tree_display(startpath):
 
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='latextemplate 1.0')
+    arguments = docopt(__doc__, version='latextemplate 1.1')
 
     # The directory where each template is defined.
     # Defaults to the default install location as
@@ -124,7 +121,7 @@ if __name__ == '__main__':
 
         # Get destination directory
         target_dir = os.path.join(
-            os.path.realpath(arguments.get('--directory', arguments.get('<directory>', '.'))),
+            os.path.realpath(arguments.get('--directory', '.')),
             arguments['<name>'])
 
         # Create directory if needed
