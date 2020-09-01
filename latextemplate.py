@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Usage: latextemplate -h | --help
        latextemplate (--list | --inspect=<template>)
-       latextemplate create [--allow-existing [--overwrite-files] --template=<template> --directory=<directory>] <name>
+       latextemplate new [--allow-existing [--overwrite-files] --template=<template> --directory=<directory>] <name>
 
 Options:
     -h --help                Displays this text.
@@ -56,7 +56,7 @@ def tree_display(startpath):
 
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='latextemplate 1.1')
+    arguments = docopt(__doc__, version='latextemplate 2.0')
 
     # The directory where each template is defined.
     # Defaults to the default install location as
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         exit(1)
 
     # `templates` command mode
-    if not arguments['create']:
+    if not arguments['new']:
         templates = glob(f"{templates_dir}/*")
         if arguments['--list']:
             # Tree all available templates
