@@ -16,9 +16,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 echo -e "\e[1mThis script\e[0m will add a symlink from"
 echo -e "$HOME/bin/"
 echo -e "to"
-echo -e "$DIR/latextemplate.py"
-echo -e "so that you can call latextemplate from any directory."
-echo -e "\`template\` is also added as an alias."
+echo -e "$DIR/template.py"
+echo -e "so that you can call template from any directory."
 read -p $'\033[33mIs this ok [N/y]?\033[0m ' -r
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
@@ -37,8 +36,7 @@ if [ ! -d $HOME/bin ]; then
     echo -e "\033[32mCreated $HOME/bin\033[0m"
 fi
 
-if ln -s "$DIR/latextemplate.py" "$HOME/bin/latextemplate" && \
-	ln -s "$DIR/latextemplate.py" "$HOME/bin/template"
+if ln -s "$DIR/template.py" "$HOME/bin/template"
 then
     echo -e "\033[32mDone.\033[0m"
 else
@@ -50,7 +48,7 @@ echo ""
 
 echo -e "\e[1m\e[33mPlease add the following line to your ~/.bashrc"
 echo -e "or equivalent:\e[0m\e[0m"
-echo "export LATEX_TEMPLATES_DIR=$DIR/templates"
+echo "export TEMPLATES_DIR=$DIR/templates"
 echo -e "\e[33mTo uninstall, run the uninstall.sh script.\e[0m"
 
 echo ""
