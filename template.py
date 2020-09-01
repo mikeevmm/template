@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Usage: latextemplate -h | --help
-       latextemplate (--list | --inspect=<template>)
-       latextemplate new [--allow-existing [--overwrite-files] --template=<template> --directory=<directory>] <name>
+"""Usage: template -h | --help
+       template (--list | --inspect=<template>)
+       template new [--allow-existing [--overwrite-files] --template=<template> --directory=<directory>] <name>
 
 Options:
     -h --help                Displays this text.
@@ -56,18 +56,18 @@ def tree_display(startpath):
 
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='latextemplate 2.0')
+    arguments = docopt(__doc__, version='template 3.0')
 
     # The directory where each template is defined.
     # Defaults to the default install location as
     # a hail mary.
-    templates_dir = os.environ.get("LATEX_TEMPLATES_DIR",
-                                   os.environ['HOME'] + "/latextemplate/templates")
+    templates_dir = os.environ.get("TEMPLATES_DIR",
+                                   os.environ['HOME'] + "/template/templates")
 
     if not os.path.exists(templates_dir):
         print("Could not find the templates directory!")
-        print("Please set LATEX_TEMPLATES_DIR to a valid directory")
-        print("or make sure HOME/latextemplate/templates/ exists.")
+        print("Please set TEMPLATES_DIR to a valid directory")
+        print("or make sure HOME/template/templates/ exists.")
         exit(1)
 
     # `templates` command mode
