@@ -1,17 +1,28 @@
 % Preamble contents, to be included in main.tex
 
-% Remove the space for signatures after the closing remark
+% Quick way to always get a name
+\makeatletter
+\def\@authorname{\ifx\@empty\fromsig%
+		\fromname%
+    \else \fromsig \fi}
+\makeatother
+
+% Don't wrap name
+\makeatletter
+\settowidth{\indentedwidth}{\@authorname}
+\makeatother
+
+% Custom signature space after the closing remark
+% (Default: no space)
 \newcommand{\sigspace}{\medskipamount}
 \makeatletter
 \renewcommand{\closing}[1]{\par\nobreak\vspace{\parskip}%
-  \stopbreaks
-  \noindent
-  \ifx\@empty\fromaddress\else
-  \hspace*{\longindentation}\fi
-  \parbox{\indentedwidth}{\raggedright
-       \ignorespaces #1\\[\sigspace]%
-       \ifx\@empty\fromsig
-           \fromname
-       \else \fromsig \fi\strut}%
-   \par}
+	\stopbreaks
+	\noindent
+	\ifx\@empty\fromaddress\else
+		\hspace*{\longindentation}\fi
+	\parbox{2\indentedwidth}{\raggedright
+		\ignorespaces #1\\[\sigspace]%
+		\@authorname\strut}%
+	\par}
 \makeatother

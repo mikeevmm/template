@@ -1,4 +1,4 @@
-\documentclass{letter}
+\documentclass[11pt, a4paper]{letter}
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
 \usepackage{lmodern}
@@ -10,10 +10,12 @@
 \usepackage{graphicx}
 \usepackage{cleveref}
 
-\input{preamble.tex}
-
+% It's important that address and signature come before the preamble
+% so that correct widths can be calculated
 \signature{Mr. X}
 \address{}
+
+\input{preamble.tex}
 
 \begin{document}
 \begin{letter}{}
