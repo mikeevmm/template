@@ -12,17 +12,26 @@
 \settowidth{\indentedwidth}{\@authorname}
 \makeatother
 
-% Custom signature space after the closing remark
-% (Default: no space)
+% Ignore full boxes
+\makeatletter
+\newlength\@@hfuzz
+\def\ignorefull{%
+    \setlength{\@@hfuzz}{\hfuzz}%
+    \hfuzz=10000pt}
+\def\noignorefull{\setlength{\hfuzz}{\@@hfuzz}}
+
+% Remove the space for signatures after the closing remark
 \newcommand{\sigspace}{\medskipamount}
 \makeatletter
 \renewcommand{\closing}[1]{\par\nobreak\vspace{\parskip}%
 	\stopbreaks
 	\noindent
 	\ifx\@empty\fromaddress\else
-		\hspace*{\longindentation}\fi
-	\parbox{2\indentedwidth}{\raggedright
+        \hspace*{\longindentation}\fi
+	\parbox{\indentedwidth}{\raggedright
 		\ignorespaces #1\\[\sigspace]%
-		\@authorname\strut}%
-	\par}
+        \ignorefull\@authorname\strut}%
+    \noignorefull%
+    \par%
+    }
 \makeatother
