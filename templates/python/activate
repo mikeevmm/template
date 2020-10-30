@@ -1,0 +1,3 @@
+#!/bin/echo Source this file.
+
+source venv/bin/activate
