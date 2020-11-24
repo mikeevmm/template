@@ -9,7 +9,7 @@ CXX?=g++
 RM?=rm -r
 DBG?=gdb
 CFLAGS+=
-CXXFLAGS+=-std=c++11
+CXXFLAGS+=-std=c++17
 CPPFLAGS+=-g -Iinclude/..
 LDFLAGS+=-g -Llib
 LDLIBS+=
