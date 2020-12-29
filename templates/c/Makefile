@@ -2,6 +2,7 @@ EXE?=main
 
 SRC_DIR=src
 OBJ_DIR=obj
+TEST_DIR=tests
 DEPDIR=$(OBJ_DIR)/.deps
 
 CC?=gcc
@@ -9,24 +10,18 @@ CXX?=g++
 RM?=rm -r
 DBG?=gdb
 CFLAGS+=
-CXXFLAGS+=-std=c++17
 CPPFLAGS+=-g -Iinclude/..
 LDFLAGS+=-g -Llib
 LDLIBS+=
 DEPFLAGS=-MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
 
 C_SRC=$(wildcard $(SRC_DIR)/*.c)
-CC_SRC=$(wildcard $(SRC_DIR)/*.cc)
-CPP_SRC=$(wildcard $(SRC_DIR)/*.cpp)
-SRC=$(C_SRC) $(CC_SRC) $(CPP_SRC)
+SRC=$(C_SRC)
 
 C_OBJ=$(C_SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.c.o)
-CC_OBJ=$(CC_SRC:$(SRC_DIR)/%.cc=$(OBJ_DIR)/%.cc.o)
-CPP_OBJ=$(CPP_SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.cpp.o)
-OBJ=$(C_OBJ) $(CC_OBJ) $(CPP_OBJ)
+OBJ=$(C_OBJ)
 
 COMPILE.c=$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
-COMPILE.cc=$(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 
 all: $(EXE)
 
@@ -36,15 +31,25 @@ $(EXE): $(OBJ)
 $(OBJ_DIR)/%.c.o : $(SRC_DIR)/%.c $(DEPDIR)/%.c.d | $(DEPDIR)
 	$(COMPILE.c) $< -o $@ 
 
-$(OBJ_DIR)/%.cc.o : $(SRC_DIR)/%.cc $(DEPDIR)/%.cc.d | $(DEPDIR)
-	$(COMPILE.cc) $< -o $@
-
-($OBJ_DIR)/%.cpp.o : $(SRC_DIR)/%.cpp $(DEPDIR)/%.cpp.d | $(DEPDIR)
-	$(COMPILE.cc) $< -o $@
-
 $(DEPDIR): ; @mkdir -p $@
 
-DEPFILES=$(C_SRC:$(SRC_DIR)/%.c=$(DEPDIR)/%.c.d) $(CC_SRC:$(SRC_DIR)/%.cc=$(DEPDIR)/%.cc.d) $(CPP_SRC:$(SRC_DIR)/%.cpp=$(DEPDIR)/%.cpp.d)
+DEPFILES=$(C_SRC:$(SRC_DIR)/%.c=$(DEPDIR)/%.c.d)
 $(DEPFILES):
 
 include $(wildcard $(DEPFILES))
+
+TEST_SRC=$(wildcard $(TEST_DIR)/*.c)
+TEST_OBJ=$(TEST_SRC:$(TEST_DIR)/%.c=$(TEST_DIR)/.obj/%.c.o)
+TESTS=$(TEST_SRC:$(TEST_DIR)/%.c=$(TEST_DIR)/.compiled/%)
+
+check: $(TESTS)
+
+$(TEST_DIR)/.compiled/% : $(TEST_DIR)/.obj/%.c.o $(OBJ)
+	$(CC) $(LDFLAGS) -o $@ $< $(filter-out obj/main.c.o, $(OBJ)) $(LDLIBS)
+	if valgrind $@; then echo "\e[32m$* passed\e[0m"; else echo "\e[31m$* failed\e[0m"; fi
+	$(RM) $@
+
+$(TEST_DIR)/.obj/%.c.o : $(TEST_DIR)/%.c
+	$(COMPILE.c) $< -o $@
+
+.PHONY: check
