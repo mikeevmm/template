@@ -24,10 +24,10 @@ def build():
     setup(name = 'CExtensions',
         version = '1.0',
         description = 'C++ routines to make PC go brr',
-        author = 'Miguel Murça',
-        author_email = 'miguel.murca@tecnico.ulisboa.pt',
+        author = 'John Doe',
+        author_email = 'john.doe@example.com',
         long_description = '''
-    C++ routines for the Quantum Dataset initiative
+    C++ routines makes computer go fast
     ''',
         ext_modules = [main_module],
         script_name = 'setup.py',
