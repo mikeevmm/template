@@ -1,0 +1,3 @@
+import cextension
+
+print("Goodbye.")
