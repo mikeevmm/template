@@ -13,7 +13,7 @@ COMPILE_FLAGS = ""
 os.makedirs(SRC_DIR, exist_ok=True)
 os.makedirs(OBJ_DIR, exist_ok=True)
 
-for source_file in glob(f"{SRC_DIR}/*.f90"):
+def make_source_recipe(source_file):
     base_file = os.path.basename(source_file)
     base_name = base_file[:base_file.rfind('.')]
 
@@ -23,6 +23,9 @@ for source_file in glob(f"{SRC_DIR}/*.f90"):
             target_files=[f"{OBJ_DIR}/{base_name}.o"])
     def compile():
         sp.run(f"{FCC} {COMPILE_FLAGS} -c {source_file} -o {OBJ_DIR}/{base_name}.o", shell=True)
+
+for source_file in glob(f"{SRC_DIR}/*.f90"):
+    make_source_recipe(source_file)
 
 @recipe(hook_deps=["source_compile"],
         info="Links the compiled objects into an executable.")
