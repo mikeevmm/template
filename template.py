@@ -17,7 +17,7 @@ Options:
 
 from internals.docopt import docopt
 from glob import glob
-from distutils.dir_util import copy_tree
+from shutil import copytree
 import os
 import pydoc
 
@@ -56,7 +56,7 @@ def tree_display(startpath):
 
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='template 3.0')
+    arguments = docopt(__doc__, version='template 3.1')
 
     # The directory where each template is defined.
     # Defaults to the default install location as
@@ -148,6 +148,6 @@ if __name__ == '__main__':
                         exit(1)
 
         # Copy template into target directory
-        copy_tree(qualified_template, target_dir)
+        copytree(qualified_template, target_dir, dirs_exist_ok=True)
 
         print(f"Created new \"{template}\" project under \"{target_dir}\"")
