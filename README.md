@@ -2,6 +2,10 @@
 
 template is a Python script to create boilerplate projects.
 
+(**See also:** `template`'s older brother, [`boyl`][boyl]!)
+
+[boyl]: https://github.com/mikeevmm/boyl
+
 ## Installation
 
 To install this script, clone the repository and run the install script.
