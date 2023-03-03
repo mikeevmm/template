@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Usage: template -h | --help
-       template (--list | --inspect=<template>)
+       template list [--full]
+       template inspect <template>
        template new [--allow-existing [--overwrite-files] --template=<template> --directory=<directory>] <name>
 
 Options:
     -h --help                Displays this text.
-    --list                   List all available templates.
-    --inspect=<template>     Lists and page displays all files in the template.
+    --full                   Show also the contents of each template.
     --allow-existing         Allow a new project to be created inside an
                              existing, non-empty directory.
     --overwrite-files        Overwrite existing files if they do exist.
@@ -56,13 +56,20 @@ def tree_display(startpath):
 
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='template 3.1')
+    arguments = docopt(__doc__, version='template 4.0')
 
     # The directory where each template is defined.
     # Defaults to the default install location as
     # a hail mary.
     templates_dir = os.environ.get("TEMPLATES_DIR",
                                    os.environ['HOME'] + "/template/templates")
+    templates_dir = os.path.normpath(templates_dir)
+
+    # Start by obtaining the qualified paths of the contents of the templates
+    # directory. Then, filter by actually being a directory.
+    templates = [os.path.normpath(path)
+                 for path in glob(f"{templates_dir}/*")]
+    templates = [path for path in templates if os.path.isdir(path)]
 
     if not os.path.exists(templates_dir):
         print("Could not find the templates directory!")
@@ -71,43 +78,7 @@ if __name__ == '__main__':
         exit(1)
 
     # `templates` command mode
-    if not arguments['new']:
-        templates = glob(f"{templates_dir}/*")
-        if arguments['--list']:
-            # Tree all available templates
-            # The templates' names are determined by the name
-            # of the folder containing them
-            for template in templates:
-                tree_display(template)
-        elif arguments['--inspect']:
-            # Inspect given template
-            # Does this template exist?
-            qualified_template_arg = templates_dir + \
-                '/' + arguments['--inspect']
-            if qualified_template_arg not in templates:
-                print("Unknown template. Use templates --list")
-                print("to see a list of available templates.")
-                exit(1)
-            # Tree-display the directory
-            tree_display(qualified_template_arg)
-
-            # Prompt for displaying each file
-            abort_display = False
-            for root, dirs, files in os.walk(qualified_template_arg):
-                for f in files:
-                    answer = input(f"Display {f} [Y/n/q]? ").lower()
-                    if answer == 'y':
-                        with open(f"{root}/{f}", 'r') as infile:
-                            pydoc.pager(infile.read())
-                    elif answer == 'n':
-                        continue
-                    elif answer == 'q':
-                        abort_display = True
-                    if abort_display:
-                        break
-                if abort_display:
-                    break
-    else:
+    if arguments['new']:
         # Create project mode
         # Determine chosen template
         template = arguments.get('--template', 'default')
@@ -151,3 +122,43 @@ if __name__ == '__main__':
         copytree(qualified_template, target_dir, dirs_exist_ok=True)
 
         print(f"Created new \"{template}\" project under \"{target_dir}\"")
+    elif arguments['inspect']:
+        # Inspect given template
+        # Does this template exist?
+        qualified_template_arg = os.path.normpath(
+                templates_dir + '/' + arguments['<template>'])
+        if qualified_template_arg not in templates:
+            print("Unknown template. Use templates --list")
+            print("to see a list of available templates.")
+            exit(1)
+        # Tree-display the directory
+        tree_display(qualified_template_arg)
+
+        # Prompt for displaying each file
+        abort_display = False
+        for root, dirs, files in os.walk(qualified_template_arg):
+            for f in files:
+                answer = input(f"Display {f} [y/N/q]? ").lower()
+                if answer == 'y':
+                    with open(f"{root}/{f}", 'r') as infile:
+                        pydoc.pager(infile.read())
+                elif answer == 'n':
+                    continue
+                elif answer == 'q':
+                    abort_display = True
+                if abort_display:
+                    break
+            if abort_display:
+                break
+
+    elif arguments['list']:
+        if arguments['--full']:
+            # Tree all available templates
+            # The templates' names are determined by the name
+            # of the folder containing them
+            for template in templates:
+                tree_display(template)
+        else:
+            # Show just the template names.
+            for template in templates:
+                print(os.path.basename(template))
