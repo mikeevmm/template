@@ -11,10 +11,13 @@ template is a Python script to create boilerplate projects.
 To install this script, clone the repository and run the install script.
 
 ```bash
-git clone https://github.com/mikeevmm/template
+git clone --recurse-submodules https://github.com/mikeevmm/template
 cd template
 bash install.sh
 ```
+
+If you'd rather not use the included templates, you can omit
+`--recurse-submodules` and configure your `TEMPLATES_DIR` accordingly.
 
 ## Usage
 

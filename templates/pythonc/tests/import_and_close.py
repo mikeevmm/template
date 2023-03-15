@@ -1,3 +1,0 @@
-import cextension
-
-print("Goodbye.")
